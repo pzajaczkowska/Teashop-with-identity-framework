@@ -2,7 +2,7 @@
 
 namespace Teashop2.Areas.Identity.Data
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [PersonalData]
         public string FirstName { get; set; }

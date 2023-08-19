@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Teashop.Data;
+using Teashop2.Areas.Identity.Data;
 using Teashop2.Data;
 
 namespace Teashop2
@@ -16,11 +19,25 @@ namespace Teashop2
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services
+                .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<TeashopContext>();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("readpolicy",
+                    builder => builder.RequireRole("Admin", "Manager", "User"));
+                options.AddPolicy("writepolicy",
+                    builder => builder.RequireRole("Admin", "Manager"));
+            });
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            CreateDbIfNotExists(app).Wait();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -48,6 +65,26 @@ namespace Teashop2
             app.MapRazorPages();
 
             app.Run();
+        }
+
+        private static async Task CreateDbIfNotExists(WebApplication application)
+        {
+            using (var scope = application.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<TeashopContext>();
+                    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                     await DbInitializer.Initialize(context, userManager, roleManager);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred creating the DB.");
+                }
+            }
         }
     }
 }

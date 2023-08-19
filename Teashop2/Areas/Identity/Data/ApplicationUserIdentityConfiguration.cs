@@ -4,9 +4,9 @@ using Teashop2.Areas.Identity.Data;
 
 namespace Teashop2.Data
 {
-    public class ApplicationUserIdentityConfiguration : IEntityTypeConfiguration<User>
+    public class ApplicationUserIdentityConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.Property(u => u.FirstName).HasMaxLength(25);
             builder.Property(u => u.LastName).HasMaxLength(30);
