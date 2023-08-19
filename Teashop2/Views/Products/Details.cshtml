@@ -1,0 +1,59 @@
+﻿@model Teashop2.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Nazwa
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Opis
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            Cena
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            Ilość na stanie
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QuantityOnStock)
+        </dd>
+        <dt class = "col-sm-2">
+            Czy dostępny
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsAvaliable)
+        </dd>
+        <dt class="col-sm-2">
+            Kategorie:
+        </dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach (var item in Model.Categories)
+                {
+                    <li>@Html.DisplayFor(modelItem => item.Name)</li>
+                }
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj produkt</a><br>
+    <a asp-action="Index">Powrót do listy produktów</a>
+</div>
