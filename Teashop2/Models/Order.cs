@@ -1,4 +1,5 @@
-﻿using Teashop2.Areas.Identity.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using Teashop2.Areas.Identity.Data;
 
 namespace Teashop2.Models
 {
@@ -21,10 +22,9 @@ namespace Teashop2.Models
         public string Street { get; set; }
         public string HouseNo { get; set; }
 
-        public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public IdentityUser User{ get; set; }
         public int ShipmentId { get; set; }
         public Shipment Shipment { get; set; }
-        public ICollection<OrderedProduct> OrderedProducts { get; set; }
+        public ICollection<OrderedProduct> OrderedProducts { get; set; } = new List<OrderedProduct>();
     }
 }

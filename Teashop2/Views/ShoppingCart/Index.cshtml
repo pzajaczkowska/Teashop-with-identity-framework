@@ -5,6 +5,9 @@
 }
 
 <h1>Koszyk</h1>
+<h4>
+    Całkowity koszt produktów: @(Model.Sum(p => p.Quantity * p.Product.Price)) zł 
+</h4>
 
 <table class="table">
     <thead>
@@ -40,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.Product.Price)
                 </td>
                 <td>
-                    @(item.Product.Price * item.Quantity)
+                    @(item.Product.Price * item.Quantity) zł
                 </td>
                 <td>
                     @*<a asp-controller="ShoppingCart" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">Usuń</a>*@
@@ -50,6 +53,11 @@
         }
     </tbody>
 </table>
+
+@if (Model.Count > 0)
+{
+    <a asp-controller="ShoppingCart" asp-action="Checkout">Złóż zamówienie</a>
+}
 
 
 @section scripts {
@@ -79,9 +87,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie usuwania</h5>
-                <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close close-modal" data-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 Czy na pewno chcesz usunąć ten produkt z koszyka?

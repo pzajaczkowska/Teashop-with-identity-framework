@@ -55,6 +55,51 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj produkt</a><br>
-    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id">Dodaj do koszyka</a><br />
+    <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id">Dodaj do koszyka</a>
     <a asp-action="Index">Powrót do listy produktów</a>
+</div>
+
+
+@section scripts
+{
+    <script>
+        function addToCartAndRedirect() {
+            var productId = @Model.Id; // Id produktu, które pobierzesz z modelu Razor
+            // Tu dodaj kod obsługujący akcję dodawania do koszyka
+            // ... Twój kod ...
+
+            // Teraz przekierowanie po dodaniu produktu do koszyka
+            window.location.href = "@Url.Action("AddToCart", "ShoppingCart")?productId=" + productId;
+        }
+
+        document.getElementById("addToCartButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Zatrzymaj domyślną akcję linku
+
+            // Otwórz okienko modalne
+            $('#addToCartModal').modal('show');
+        });
+
+        $(".close-modal").click(function () {
+            $("#addToCartModal").modal("hide");
+            addToCartAndRedirect(); // Wywołaj akcję po zamknięciu okna modalnego
+        });
+    </script>
+    </script>
+}
+
+<div class="modal fade" id="addToCartModal" tabindex="-1" role="dialog" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addToCartModalLabel">Produkt dodany do koszyka</h5>
+                <button type="button" class="btn-close close-modal" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Twój produkt został dodany do koszyka.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-modal" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
 </div>

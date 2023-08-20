@@ -3,5 +3,9 @@
     public class ShoppingCart
     {
         public List<OrderedProduct> Products { get; set; } = new List<OrderedProduct>();
+        public void ClearCart()
+        {
+            Products.Clear();
+        }
     }
 }

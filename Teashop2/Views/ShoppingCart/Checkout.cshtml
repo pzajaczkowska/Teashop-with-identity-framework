@@ -1,0 +1,33 @@
+﻿@model Teashop2.ViewModels.CheckoutViewModel
+
+<h1>Składanie zamówienia</h1>
+
+<form asp-controller="ShoppingCart" asp-action="Checkout" method="post">
+    <div class="form-group">
+        <label for="PostalCode">Kod pocztowy</label>
+        <input type="text" class="form-control" id="PostalCode" name="PostalCode" required>
+    </div>
+    <div class="form-group">
+        <label for="City">Miasto</label>
+        <input type="text" class="form-control" id="City" name="City" required>
+    </div>
+    <div class="form-group">
+        <label for="Street">Ulica</label>
+        <input type="text" class="form-control" id="Street" name="Street" required>
+    </div>
+    <div class="form-group">
+        <label for="HouseNo">Numer domu</label>
+        <input type="text" class="form-control" id="HouseNo" name="HouseNo" required>
+    </div>
+    <div class="form-group">
+        <label for="ShipmentId">Sposób dostawy</label>
+        <select class="form-control" id="ShipmentId" name="ShipmentId" required>
+            <option value="">Wybierz sposób dostawy</option>
+            @foreach (var shipment in Model.Shipments)
+            {
+                <option value="@shipment.Id">@shipment.Name - @shipment.Price zł (szacowany czas dostawy: @shipment.EstimatedTime)</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Złóż zamówienie</button>
+</form>

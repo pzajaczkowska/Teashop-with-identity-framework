@@ -32,4 +32,21 @@ public class TeashopContext : IdentityDbContext<IdentityUser>
         // Add your customizations after calling base.OnModelCreating(builder);
         builder.ApplyConfiguration(new ApplicationUserIdentityConfiguration());
     }
+
+    public void UpdateProductsAfterCheckout(List<OrderedProduct> products)
+    {
+        foreach (var item in products)
+        {
+            Product product = Products.FirstOrDefault(p => p.Id == item.Product.Id);
+            product.QuantityOnStock -= item.Quantity;
+            if (product.QuantityOnStock < 0)
+            {
+                product.QuantityOnStock = 0;
+                product.IsAvaliable = false;
+            }
+            this.Update(product);
+        }
+        //this.SaveChanges();
+        //this.
+    }
 }

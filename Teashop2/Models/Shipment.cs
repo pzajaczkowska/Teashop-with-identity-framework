@@ -7,6 +7,6 @@
         public float Price { get; set; }
         public string? EstimatedTime { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        //public ICollection<Order> Orders { get; set; }
     }
 }
