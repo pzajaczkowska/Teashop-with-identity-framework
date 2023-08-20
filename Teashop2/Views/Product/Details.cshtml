@@ -55,5 +55,6 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj produkt</a><br>
+    <a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id">Dodaj do koszyka</a><br />
     <a asp-action="Index">Powrót do listy produktów</a>
 </div>

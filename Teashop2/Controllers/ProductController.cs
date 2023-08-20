@@ -10,11 +10,11 @@ using Teashop2.Models;
 
 namespace Teashop2.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
         private readonly TeashopContext _context;
 
-        public ProductsController(TeashopContext context)
+        public ProductController(TeashopContext context)
         {
             _context = context;
         }

@@ -1,0 +1,95 @@
+﻿@model List<Teashop2.Models.OrderedProduct>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Koszyk</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Produkt
+            </th>
+            <th>
+                Ilość
+            </th>
+            <th>
+                Cena jednostkowa
+            </th>
+            <th>
+                Wartość
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="product-name">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.Id">
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </td>
+                <td>
+                    @(item.Product.Price * item.Quantity)
+                </td>
+                <td>
+                    @*<a asp-controller="ShoppingCart" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">Usuń</a>*@
+                    <a href="#" class="btn-remove" data-product-id="@item.ProductId">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".btn-remove").click(function (e) {
+                e.preventDefault();
+                var productId = $(this).data("product-id");
+                var productName = $(this).closest("tr").find(".product-name").text(); // Pobierz nazwę produktu z odpowiedniej kolumny
+                $("#confirmModal .modal-body").html("Czy na pewno chcesz usunąć produkt: " + productName + "?");
+                $("#confirmModal").modal("show");
+
+                $("#btn-confirm-remove").click(function () {
+                    window.location.href = '@Url.Action("RemoveFromCart", "ShoppingCart")' + '?productId=' + productId;
+                });                
+                $(".close-modal").click(function () {
+                    $("#confirmModal").modal("hide");
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie usuwania</h5>
+                <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Czy na pewno chcesz usunąć ten produkt z koszyka?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-modal" data-dismiss="modal">Anuluj</button>
+                <button id="btn-confirm-remove" type="button" class="btn btn-danger">Usuń</button>
+            </div>
+        </div>
+    </div>
+</div>

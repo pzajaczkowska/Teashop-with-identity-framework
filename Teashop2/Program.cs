@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Teashop.Data;
 using Teashop2.Areas.Identity.Data;
 using Teashop2.Data;
+using Teashop2.Models;
 
 namespace Teashop2
 {
@@ -33,6 +34,9 @@ namespace Teashop2
             });
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSession();
+            builder.Services.AddSingleton<ShoppingCart>();
 
             var app = builder.Build();
 
