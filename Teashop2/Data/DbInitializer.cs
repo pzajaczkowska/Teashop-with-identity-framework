@@ -298,6 +298,18 @@ namespace Teashop.Data
                 products.ForEach(p => context.Products.Add(p));
                 context.SaveChanges();
             }
+
+            if(!context.Shipments.Any())
+            {
+                List<Shipment> shipments = new List<Shipment>()
+            {
+                new Shipment{Name = "Paczkomat InPost", Price = 13.99f, EstimatedTime = "1-2 dni roboczych"},
+                new Shipment{Name = "Kurier Dpd", Price = 12.99f, EstimatedTime = "2-3 dni roboczych"},
+                new Shipment{Name = "Orlen Paczka", Price = 4.5f, EstimatedTime = "3-5 dni roboczych"},
+            };
+                shipments.ForEach(s => context.Shipments.Add(s));
+                context.SaveChanges();
+            }
         }
     }
 }
