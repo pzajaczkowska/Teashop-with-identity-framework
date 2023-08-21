@@ -1,4 +1,4 @@
-﻿@model Teashop2.Models.Product
+﻿@model Teashop2.ViewModel.AddProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,33 +11,46 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Product.Id"/>
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Nazwa</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Product.Name" class="control-label"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label">Opis</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Product.Description" class="control-label"></label>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label">Cena</label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="Product.Price" class="control-label"></label>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="QuantityOnStock" class="control-label">Ilość na stanie</label>
-                <input asp-for="QuantityOnStock" class="form-control" />
-                <span asp-validation-for="QuantityOnStock" class="text-danger"></span>
+                <label asp-for="Product.QuantityOnStock" class="control-label"></label>
+                <input asp-for="Product.QuantityOnStock" class="form-control" />
+                <span asp-validation-for="Product.QuantityOnStock" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">Czy dostępny</label>
-                <input class="form-check-input" asp-for="IsAvaliable" />
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Product.IsAvaliable" /> @Html.DisplayNameFor(model => model.Product.IsAvaliable)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <h4>Categories</h4>
+                @for (int i = 0; i < Model.Categories.Count; i++)
+                {
+                    <div class="form-check">
+                        <input type="hidden" asp-for="Categories[i].Id" />
+                        <input type="hidden" asp-for="Categories[i].Name" />
+                        <input type="checkbox" asp-for="Categories[i].IsSelected" class="form-check-input" />
+                        <label class="form-check-label">@Model.Categories[i].Name</label>
+                    </div>
+                }
             </div>
             <div class="form-group">
-                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>
     </div>

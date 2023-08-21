@@ -19,12 +19,12 @@ namespace Teashop2.Models
         public string? Description { get; set; }
 
         [DataType(DataType.Currency)]
+        [Range(1, 500)]
         [Required]
         public float Price { get; set; }
 
         [Range(0, 5000)]
         [Required]
-
         public int QuantityOnStock { get; set; }
 
         public bool IsAvaliable { get; set; }

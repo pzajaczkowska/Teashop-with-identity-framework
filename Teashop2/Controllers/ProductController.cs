@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using Teashop2.Data;
 using Teashop2.Models;
+using Teashop2.ViewModel;
 
 namespace Teashop2.Controllers
 {
@@ -92,7 +94,22 @@ namespace Teashop2.Controllers
         [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new AddProductViewModel
+            {
+                Product = new Product(),
+                Categories = new List<CategoryViewModel>()
+            };
+
+            foreach (Category cat in _context.Categories)
+                viewModel.Categories.Add(
+                        new CategoryViewModel
+                        {
+                            Id = cat.Id,
+                            Name = cat.Name
+                        }
+                    );
+
+            return View(viewModel);
         }
 
         // POST: Products/Create
@@ -101,25 +118,37 @@ namespace Teashop2.Controllers
         [HttpPost]
         [Authorize(Policy = "writepolicy")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,QuantityOnStock,IsAvaliable")] Product product)
+        public async Task<IActionResult> Create([Bind("Product, Categories")] AddProductViewModel model)
         {
             try
             {
-                if (ModelState.IsValid)
+                var selectedCategories = model.Categories.Where(cat => cat.IsSelected).Select(cat => cat.Id);
+
+                if (selectedCategories.Any())
                 {
+                    var product = new Product
+                    {
+                        Name = model.Product.Name,
+                        Description = model.Product.Description,
+                        Price = model.Product.Price,
+                        QuantityOnStock = model.Product.QuantityOnStock,
+                        IsAvaliable = model.Product.IsAvaliable,
+                        Categories = _context.Categories.Where(cat => selectedCategories.Contains(cat.Id)).ToList()
+                    };
+
                     _context.Add(product);
                     await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
             }
-            catch (DbUpdateException /* ex */)
+            catch (DbUpdateException)
             {
-                //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
+                    "Try again, and if the problem persists, " +
                     "see your system administrator.");
             }
-            return View(product);
+            return View(model);
         }
 
         // GET: Products/Edit/5
@@ -131,12 +160,38 @@ namespace Teashop2.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+                                            .Include(p => p.Categories)
+                                            .AsNoTracking()
+                                            .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
-            return View(product);
+
+            var viewModel = new AddProductViewModel
+            {
+                Product = product,
+                Categories = new List<CategoryViewModel>()
+            };
+
+            foreach (Category cat in _context.Categories)
+            {
+                var categoryViewModel = new CategoryViewModel
+                {
+                    Id = cat.Id,
+                    Name = cat.Name
+                };
+
+                if (product.Categories.Any(selectedCat => selectedCat.Id == cat.Id))
+                {
+                    categoryViewModel.IsSelected = true;
+                }
+
+                viewModel.Categories.Add(categoryViewModel);
+            }
+
+            return View(viewModel);
         }
 
         // POST: Products/Edit/5
@@ -145,23 +200,48 @@ namespace Teashop2.Controllers
         [HttpPost]
         [Authorize(Policy = "writepolicy")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,QuantityOnStock,IsAvaliable")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Product, Categories")] AddProductViewModel model)
         {
-            if (id != product.Id)
+            try
             {
-                return NotFound();
+                if (id != model.Product.Id)
+                {
+                    return NotFound();
+                }
+
+                var selectedCategories = model.Categories.Where(cat => cat.IsSelected).Select(cat => cat.Id);
+
+                if (selectedCategories.Any())
+                {
+                    Product product = _context.Products
+                                    .Include(p => p.Categories)
+                                    .FirstOrDefault(p => p.Id == id);
+
+                    product.Name = model.Product.Name;
+                    product.Description = model.Product.Description;
+                    product.Price = model.Product.Price;
+                    product.QuantityOnStock = model.Product.QuantityOnStock;
+                    product.IsAvaliable = model.Product.IsAvaliable;
+
+                    var selectedCategoryIds = model.Categories.Where(cat => cat.IsSelected).Select(cat => cat.Id).ToList();
+                    var categories = _context.Categories.Where(cat => selectedCategoryIds.Contains(cat.Id)).ToList();
+
+                    product.Categories.Clear();
+                    product.Categories.AddRange(categories);
+                    _context.Products.Update(product);
+                    _context.SaveChanges();
+
+                    return RedirectToAction(nameof(Index));
+
+                }
+
+                else
+                    return View(model);
             }
 
-            if (ModelState.IsValid)
-            {
-                try
+            catch (DbUpdateConcurrencyException)
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
+                    if (!ProductExists(model.Product.Id))
                     {
                         return NotFound();
                     }
@@ -169,10 +249,7 @@ namespace Teashop2.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
+                }            
         }
 
 
