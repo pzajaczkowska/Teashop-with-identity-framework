@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,19 @@ namespace Teashop2.Controllers
     public class OrderController : Controller
     {
         private readonly TeashopContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IServiceProvider _serviceProvider;
 
-        public OrderController(TeashopContext context)
+        public OrderController
+            (
+                TeashopContext context,
+                UserManager<IdentityUser> userManager,
+                IServiceProvider serviceProvider
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _serviceProvider = serviceProvider;
         }
 
         // GET: Order
@@ -27,6 +37,21 @@ namespace Teashop2.Controllers
             var teashopContext = _context.Orders.Include(o => o.Shipment).Where(o => o.Status != Status.SHIPPED);
 
             return View(await teashopContext.ToListAsync());
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UserData()
+        {
+            IdentityUser user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var orders = _context.Orders.Include(o => o.Shipment).Where(o => o.User.Id == user.Id);
+
+            return View(await orders.ToListAsync());
         }
 
         // GET: Order/Details/5

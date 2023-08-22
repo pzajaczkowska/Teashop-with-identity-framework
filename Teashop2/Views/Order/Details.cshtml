@@ -1,4 +1,6 @@
-﻿@model Teashop2.Models.Order
+﻿@using Teashop2.Extensions
+@inject IServiceProvider ServiceProvider
+@model Teashop2.Models.Order
 
 @{
     ViewData["Title"] = "Details";
@@ -7,17 +9,16 @@
 
 <h1>Szczegóły zamówienia</h1>
 <div>
-    @*<form asp-action="Edit">*@
-        <label asp-for="Status" class="control-label"></label>
-        @*<select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses"></select>*@
-        <select id="statusDropdown" class="form-control" asp-for="Status" asp-items="ViewBag.Statuses"></select>
+    @if (User.IsInPolicy("writepolicy", ServiceProvider))
+{
+    <label asp-for="Status" class="control-label"></label>
+    <select id="statusDropdown" class="form-control" asp-for="Status" asp-items="ViewBag.Statuses"></select>
 
-        <div class="form-group">
-        <button id="changeStatusButton" class="btn btn-primary">Zmień status</button>
+    <div class="form-group">
+    <button id="changeStatusButton" class="btn btn-primary">Zmień status</button>
     </div>
-    @*</form>*@
-
     <br />
+}
     <a asp-action="Index">Powrót</a>
 </div>
 

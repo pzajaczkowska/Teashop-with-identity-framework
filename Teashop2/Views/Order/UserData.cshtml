@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Teashop2.Models.Order>
+
+@{
+    ViewData["Title"] = "Zamówienia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Historia zamówień</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Data
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Koszt
+            </th>
+            <th>
+                Dostawa
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @item.TotalCost.ToString("c2")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shipment.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
