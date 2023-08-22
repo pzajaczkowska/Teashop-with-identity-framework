@@ -1,0 +1,112 @@
+﻿@model Teashop2.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Szczegóły zamówienia</h1>
+<div>
+    @*<form asp-action="Edit">*@
+        <label asp-for="Status" class="control-label"></label>
+        @*<select asp-for="Status" class="form-control" asp-items="ViewBag.Statuses"></select>*@
+        <select id="statusDropdown" class="form-control" asp-for="Status" asp-items="ViewBag.Statuses"></select>
+
+        <div class="form-group">
+        <button id="changeStatusButton" class="btn btn-primary">Zmień status</button>
+    </div>
+    @*</form>*@
+
+    <br />
+    <a asp-action="Index">Powrót</a>
+</div>
+
+<div>
+    <h4>Zamówienie nr @Model.Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalCost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.TotalCost.ToString("c2")
+        </dd>
+        <hr />
+        <h4>Adres</h4>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PostalCode), @Html.DisplayFor(model => model.City)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Street) @Html.DisplayFor(model => model.HouseNo)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Shipment.Name)
+        </dd>
+    </dl>
+</div>
+<hr />
+<h4>Zamówione produkty</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Produkt
+            </th>
+            <th>
+                Ilość
+            </th>
+            <th>
+                Cena jednostkowa
+            </th>
+            <th>
+                Wartość
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderedProducts)
+        {
+            <tr>
+                <td class="product-name">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.Id">
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @($"{item.PricePerUnit:c2}")
+                </td>
+                <td>
+                    @($"{item.PricePerUnit * item.Quantity:c2}")
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        Koszt produktów: @(Model.TotalCost - Model.Shipment.Price) zł
+    </tfoot>
+    </table>
+@section scripts
+{
+        <script>
+            document.getElementById("changeStatusButton").addEventListener("click", function () {
+                var selectedStatus = document.getElementById("statusDropdown").value;
+                var url = '@Url.Action("Edit", new { id = Model.Id, status = "STATUS" })'.replace("STATUS", selectedStatus);
+                window.location.href = url;
+            });
+        </script>
+}

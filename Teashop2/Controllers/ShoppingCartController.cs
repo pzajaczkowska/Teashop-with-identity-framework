@@ -72,6 +72,13 @@ namespace Teashop2.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult ClearCart()
+        {
+            _shoppingCart.ClearCart();
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Checkout()
         {
             var viewModel = new CheckoutViewModel

@@ -5,7 +5,6 @@ namespace Teashop2.Models
 {
     public enum Status
     {
-        CART,
         PAID,
         COMPLETING,
         SHIPPED
