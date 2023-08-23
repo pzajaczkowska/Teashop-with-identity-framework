@@ -6,7 +6,7 @@
 
 <h1>Koszyk</h1>
 <h4>
-    Całkowity koszt produktów: @(Model.Sum(p => p.Quantity * p.Product.Price)) zł 
+    Całkowity koszt produktów:  @($"{Model.Sum(p => p.Quantity * p.Product.Price):c2}")
 </h4>
 @*<button id="btn-clear" class="btn btn-danger">Wyczyść koszyk</button>*@
 <a href="#" id="btn-clear" class="btn btn-danger">Wyczyść koszyk</a>

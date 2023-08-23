@@ -98,7 +98,9 @@
         }
     </tbody>
     <tfoot>
-        Koszt produktów: @(Model.TotalCost - Model.Shipment.Price) zł
+        <td>
+            Koszt produktów: @(Model.TotalCost - Model.Shipment.Price) zł
+        </td>
     </tfoot>
     </table>
 @section scripts

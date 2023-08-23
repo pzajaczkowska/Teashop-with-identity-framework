@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Teashop2.Models.Category>
+
+@{
+    ViewData["Title"] = "Kategorie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Zarządzanie kategoriami</h1>
+
+<p>
+    <a asp-action="Create">Dodaj nową</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="category-name">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edycja</a>
+                    <a href="#" data-category-id="@item.Id" class="btn btn-danger btn-delete">Usuń</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".btn-delete").click(function (e) {
+                e.preventDefault();
+                var categoryId = $(this).data("category-id");
+                var categoryName = $(this).closest("tr").find(".category-name").text(); // Pobierz nazwę produktu z odpowiedniej kolumny
+                $("#confirmDeleteModal .modal-body").html("Czy na pewno chcesz usunąć kategorię: " + categoryName + "?");
+                $("#confirmDeleteModal").modal("show");
+
+                $("#btn-confirm-delete").click(function () {
+                    window.location.href = '@Url.Action("Delete", "Category")' + '?categoryId=' + categoryId;
+                });
+                $(".close-modal").click(function () {
+                    $("#confirmDeleteModal").modal("hide");
+                });
+            });
+        });
+    </script>
+}
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Potwierdzenie usuwania</h5>
+                <button type="button" class="btn-close close-modal" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-modal" data-dismiss="modal">Anuluj</button>
+                <button id="btn-confirm-delete" type="button" class="btn btn-danger">Usuń</button>
+            </div>
+        </div>
+    </div>
+</div>
