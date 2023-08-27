@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Teashop2.Areas.Identity.Data;
@@ -8,6 +9,7 @@ using Teashop2.ViewModels;
 
 namespace Teashop2.Controllers
 {
+    [Authorize(Roles ="User")]
     public class ShoppingCartController : Controller
     {
         private readonly ShoppingCart _shoppingCart;

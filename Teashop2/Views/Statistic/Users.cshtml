@@ -1,0 +1,41 @@
+﻿@model List<Teashop2.ViewModel.StatisticViewModel>;
+
+<h1>Statystyki ilości złożonych zamówień</h1>
+
+<canvas id="salesChart"></canvas>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var userLabels = @Html.Raw(Json.Serialize(Model.Select(s => s.Key)));
+        var userData = @Html.Raw(Json.Serialize(Model.Select(s => s.Value)));
+
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: userLabels,
+                datasets: [{
+                    label: 'Ilość zamówień',
+                    data: userData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        ctx.stroke();
+    </script>
+}

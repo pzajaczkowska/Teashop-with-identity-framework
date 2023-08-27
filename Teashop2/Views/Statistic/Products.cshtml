@@ -1,0 +1,41 @@
+﻿@model List<Teashop2.ViewModel.StatisticViewModel>;
+
+<h1>Statystyki sprzedaży produktów</h1>
+
+<canvas id="salesChart"></canvas>
+@*@foreach (var item in Model)
+{
+    <p>@item.Key</p>
+}*@
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var productLabels = @Html.Raw(Json.Serialize(Model.Select(s => s.Key)));
+        var productData = @Html.Raw(Json.Serialize(Model.Select(s => s.Value)));
+
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: productLabels,
+                datasets: [{
+                    label: 'Ilość sprzedanych produktów',
+                    data: productData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        ctx.stroke();
+    </script>
+}
