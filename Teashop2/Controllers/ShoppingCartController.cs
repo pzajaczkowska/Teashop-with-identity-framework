@@ -31,12 +31,13 @@ namespace Teashop2.Controllers
 
             foreach (OrderedProduct item in copy)
             {
-                int quantityOnStock = _context.Products.FirstOrDefault(p => p.Id == item.Product.Id).QuantityOnStock;
+                Product product = _context.Products.FirstOrDefault(p => p.Id == item.Product.Id);
+                //int quantityOnStock = _context.Products.FirstOrDefault(p => p.Id == item.Product.Id).QuantityOnStock;
 
-                if (quantityOnStock == 0)
+                if (product.QuantityOnStock < item.Quantity)
+                    item.Quantity = product.QuantityOnStock;
+                if (!product.IsAvaliable || product.QuantityOnStock == 0)
                     _shoppingCart.Products.Remove(item);
-                else if (quantityOnStock < item.Quantity)
-                    item.Quantity = quantityOnStock;
             }
 
             return View(_shoppingCart.Products);

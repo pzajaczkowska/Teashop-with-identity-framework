@@ -35,6 +35,7 @@ namespace Teashop2
 
             builder.Services.AddControllersWithViews();
 
+
             builder.Services.AddSession();
             builder.Services.AddSingleton<ShoppingCart>();
 

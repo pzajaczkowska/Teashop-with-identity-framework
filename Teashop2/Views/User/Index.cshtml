@@ -1,0 +1,33 @@
+﻿@model List<Teashop2.Models.UserWithRoles>
+@{
+    ViewData["Title"] = "Użytkownicy";
+}
+
+<h1>Użytkownicy</h1>
+<a asp-action="Create">Create</a>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Login</td>
+            <td>Role</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.User.Id</td>
+                <td>@user.User.UserName</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        <p>@role</p>        
+                    }
+                </td>
+                <td><a asp-controller="User" asp-action="Edit" asp-route-id="@user.User.Id" class="btn btn-primary">Edytuj</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

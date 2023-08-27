@@ -39,7 +39,7 @@ public class TeashopContext : IdentityDbContext<IdentityUser>
         {
             Product product = Products.FirstOrDefault(p => p.Id == item.Product.Id);
             product.QuantityOnStock -= item.Quantity;
-            if (product.QuantityOnStock < 0)
+            if (product.QuantityOnStock <= 0)
             {
                 product.QuantityOnStock = 0;
                 product.IsAvaliable = false;
