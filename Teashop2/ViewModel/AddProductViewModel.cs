@@ -5,6 +5,7 @@ namespace Teashop2.ViewModel
     public class AddProductViewModel
     {
         public Product Product { get; set; }
+        public string PreviousImagePath { get; set; }
         public List<CategoryViewModel> Categories { get; set; }
     }
 

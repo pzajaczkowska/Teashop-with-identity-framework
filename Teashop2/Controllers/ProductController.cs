@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging;
+using Org.BouncyCastle.Asn1.Crmf;
 using Teashop2.Data;
 using Teashop2.Models;
 using Teashop2.ViewModel;
@@ -118,7 +119,7 @@ namespace Teashop2.Controllers
         [HttpPost]
         [Authorize(Policy = "writepolicy")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Product, Categories")] AddProductViewModel model)
+        public async Task<IActionResult> Create([Bind("Product, Categories")] AddProductViewModel model, IFormFile imageFile)
         {
             try
             {
@@ -133,7 +134,8 @@ namespace Teashop2.Controllers
                         Price = model.Product.Price,
                         QuantityOnStock = model.Product.QuantityOnStock,
                         IsAvaliable = model.Product.IsAvaliable,
-                        Categories = _context.Categories.Where(cat => selectedCategories.Contains(cat.Id)).ToList()
+                        Categories = _context.Categories.Where(cat => selectedCategories.Contains(cat.Id)).ToList(),
+                        ImagePath = await SaveImage(imageFile)
                     };
 
                     _context.Add(product);
@@ -172,7 +174,8 @@ namespace Teashop2.Controllers
             var viewModel = new AddProductViewModel
             {
                 Product = product,
-                Categories = new List<CategoryViewModel>()
+                Categories = new List<CategoryViewModel>(),
+                PreviousImagePath = product.ImagePath
             };
 
             foreach (Category cat in _context.Categories)
@@ -200,7 +203,7 @@ namespace Teashop2.Controllers
         [HttpPost]
         [Authorize(Policy = "writepolicy")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Product, Categories")] AddProductViewModel model)
+        public async Task<IActionResult> Edit(int id, [Bind("Product, Categories, PreviousImagePath")] AddProductViewModel model, IFormFile? imageFile)
         {
             try
             {
@@ -222,6 +225,15 @@ namespace Teashop2.Controllers
                     product.Price = model.Product.Price;
                     product.QuantityOnStock = model.Product.QuantityOnStock;
                     product.IsAvaliable = model.Product.IsAvaliable;
+
+                    if (imageFile != null)
+                    {
+                        product.ImagePath = await SaveImage(imageFile);
+                    }
+                    else if (!string.IsNullOrEmpty(model.PreviousImagePath))
+                    {
+                        product.ImagePath = model.PreviousImagePath;
+                    }
 
                     var selectedCategoryIds = model.Categories.Where(cat => cat.IsSelected).Select(cat => cat.Id).ToList();
                     var categories = _context.Categories.Where(cat => selectedCategoryIds.Contains(cat.Id)).ToList();
@@ -255,6 +267,23 @@ namespace Teashop2.Controllers
         private bool ProductExists(int id)
         {
           return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private async Task<string> SaveImage(IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageName);
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                return "/images/" + imageName;
+            }
+            return null;
         }
     }
 }
