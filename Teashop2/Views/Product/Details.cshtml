@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły produktu</h1>
 
 <div>
-    <h4>Product</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -54,8 +53,7 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj produkt</a><br>
-    @if (User.IsInRole("User"))
+    @if (User.IsInRole("User") && Model.IsAvaliable)
     {
         <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary">Dodaj do koszyka</a>
     }
@@ -63,6 +61,11 @@
         <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary disabled">Dodaj do koszyka</a>
     }
     <a asp-action="Index">Powrót do listy produktów</a>
+    <br>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success">Edytuj produkt</a>
+    }
 </div>
 
 

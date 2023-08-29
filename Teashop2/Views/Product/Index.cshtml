@@ -1,21 +1,30 @@
-﻿@*@model IEnumerable<Teashop2.Models.Product>*@
+﻿@using Microsoft.AspNetCore.Identity
+@using Teashop2.Extensions
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IServiceProvider ServiceProvider
+
 @model PaginatedList<Teashop2.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Produkty";
 }
 
 <h1>Produkty</h1>
-
-<p>
-    <a asp-action="Create">Dodaj nowy produkt</a>
-</p>
+<hr />
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">Dodaj nowy produkt</a>
+    </p>
+}
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
             Wyszukaj produkty: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
             <input type="submit" value="Wyszukaj" class="btn btn-primary" />
-            <a asp-action="Index">Wyczyść filtr</a>
+            <a asp-action="Index" class="btn btn-secondary">Wyczyść filtr</a>
         </p>
     </div>
 </form>
@@ -31,11 +40,14 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Cena [zł]</a>
             </th>
+            @if (User.IsInPolicy("writepolicy", ServiceProvider))
+            {
+                <th>
+                    Ilość na stanie
+                </th>
+            }
             <th>
-                Ilość na stanie
-            </th>
-            <th>
-                Dostępność
+                Dostępny
             </th>
             <th></th>
         </tr>
@@ -52,15 +64,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
+            @if (User.IsInPolicy("writepolicy", ServiceProvider))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantityOnStock)
+                </td>
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.QuantityOnStock)
+                @if (item.IsAvaliable)
+                {
+                        <span>Tak</span>
+                }
+                else
+                {
+                    <span>Nie</span>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsAvaliable)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edycja</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn bg-light">Edycja&nbsp;<i class="bi bi-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn bg-light">Szczegóły&nbsp;<i class="bi bi-eye-fill"></i></a>
             </td>
         </tr>
         }

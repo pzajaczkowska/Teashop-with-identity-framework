@@ -53,16 +53,16 @@ namespace Teashop2.Controllers
             switch (sortOrder)
             {
                 case "name_desc":
-                    products = products.OrderByDescending(p => p.Name);
+                    products = products.OrderByDescending(p => p.IsAvaliable).ThenByDescending(p => p.Name);
                     break;
                 case "Price":
-                    products = products.OrderBy(p => p.Price);
+                    products = products.OrderByDescending(p => p.IsAvaliable).ThenBy(p => p.Price);
                     break;
                 case "price_desc":
-                    products = products.OrderByDescending(p => p.Price);
+                    products = products.OrderByDescending(p => p.IsAvaliable).ThenByDescending(p => p.Price);
                     break;
                 default:
-                    products = products.OrderBy(p => p.Name);
+                    products = products.OrderByDescending(p => p.IsAvaliable).ThenBy(p => p.Name);
                     break;
             }
 

@@ -4,7 +4,7 @@
 }
 
 <h1>Użytkownicy</h1>
-<a asp-action="Create">Create</a>
+@*<a asp-action="Create">Dodaj nowego</a>*@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -26,7 +26,16 @@
                         <p>@role</p>        
                     }
                 </td>
-                <td><a asp-controller="User" asp-action="Edit" asp-route-id="@user.User.Id" class="btn btn-primary">Edytuj</a></td>
+                <td>
+                    @if (new List<string>(){"admin", "superuser", "user"}.Contains(@user.User.UserName))
+                    {
+                        <a asp-controller="User" asp-action="Edit" asp-route-id="@user.User.Id" class="btn btn-primary disabled">Edytuj</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="User" asp-action="Edit" asp-route-id="@user.User.Id" class="btn btn-primary">Edytuj</a>
+                    }
+                </td>
             </tr>
         }
     </tbody>
