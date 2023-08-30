@@ -20,6 +20,7 @@ namespace Teashop2.Models
         public string City { get; set; }
         public string Street { get; set; }
         public string HouseNo { get; set; }
+        public string Address { get => $"ul. {Street} {HouseNo}, {PostalCode} {City}";} 
 
         public IdentityUser User{ get; set; }
         public int ShipmentId { get; set; }

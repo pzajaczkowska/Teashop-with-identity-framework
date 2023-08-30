@@ -7,7 +7,8 @@ using Teashop.Data;
 using Teashop2.Areas.Identity.Data;
 using Teashop2.Data;
 using Teashop2.Models;
-using Teashop2.Services;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace Teashop2
 {
@@ -47,6 +48,8 @@ namespace Teashop2
 
             builder.Services.AddSession();
             builder.Services.AddSingleton<ShoppingCart>();
+            builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 
             var app = builder.Build();
 
