@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Teashop.Data;
 using Teashop2.Areas.Identity.Data;
 using Teashop2.Data;
 using Teashop2.Models;
+using Teashop2.Services;
 
 namespace Teashop2
 {
@@ -32,6 +35,12 @@ namespace Teashop2
                 options.AddPolicy("writepolicy",
                     builder => builder.RequireRole("Admin", "Manager"));
             });
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+            });
+
 
             builder.Services.AddControllersWithViews();
 

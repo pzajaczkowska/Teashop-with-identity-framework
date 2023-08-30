@@ -6,10 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -150,6 +153,7 @@ namespace Teashop2.Areas.Identity.Pages.Account
 
                     await _userManager.AddToRoleAsync(user, "User");
 
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -159,8 +163,8 @@ namespace Teashop2.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await SendEmailAsync(Input.Email, "Aktywacja konta w TEASHOP",
+                        $"Witaj w Teashop! Kliknij w link aktywacyny aby rozpocząć zakupy!<br>kliknij: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'> tutaj</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -180,6 +184,34 @@ namespace Teashop2.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task<bool> SendEmailAsync(string email, string subject, string body)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("apteka.pp2023@gmail.com", "qrrvzijswsbzfbjw"),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("apteka.pp2023@gmail.com"),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                mailMessage.To.Add(email);
+
+                smtpClient.Send(mailMessage);
+            }
+            catch (Exception ex) { return false; }
+
+            return true;
         }
 
         private IdentityUser CreateUser()

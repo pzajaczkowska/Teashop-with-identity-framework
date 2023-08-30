@@ -20,6 +20,7 @@ namespace Teashop2.Models
 
         [DataType(DataType.Currency)]
         [Range(1, 500)]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         [Required]
         public float Price { get; set; }
 
