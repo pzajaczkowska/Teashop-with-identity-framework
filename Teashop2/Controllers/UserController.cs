@@ -86,9 +86,9 @@ namespace Teashop2.Controllers
                 return View(model);
         }
 
-        public  Task<List<UserWithRoles>> GetAllUsersWithRolesAsync()
+        public async Task<List<UserWithRoles>> GetAllUsersWithRolesAsync()
         {
-            var usersWithRoles =  _context.Users
+            var usersWithRoles = await  _context.Users
                 .Select(user => new UserWithRoles
                 {
                     User = user,

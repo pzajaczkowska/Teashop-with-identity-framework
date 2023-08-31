@@ -7,21 +7,89 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Szczegóły zamówienia</h1>
-<div>
-    @if (User.IsInPolicy("writepolicy", ServiceProvider))
-{
-    <label asp-for="Status" class="control-label"></label>
-    <select id="statusDropdown" class="form-control" asp-for="Status" asp-items="ViewBag.Statuses"></select>
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-8">
+            <div class="card" style="border-radius: 10px;">
+                <div class="card-header px-4 py-5">
+                    <h5 class="mb-0">Szczegóły zamówienia</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <p class="lead fw-normal mb-0">Produkty</p>
+                        <p class="small text-muted mb-0">Nr zamówienia : @Model.Id</p>
+                    </div>
+                    <div class='card shadow-0 border mb-4'>
+                        <div class='card-body'>
+                            @foreach (var item in Model.OrderedProducts)
+                            {
+                                <div class='row'>
 
-    <div class="form-group">
-        <button id="changeStatusButton" class="btn btn-primary">Zmień status</button>
+                                <div class='col-md-4 text-center d-flex justify-content-center align-items-center'>
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.Id" class='text-muted mb-0'>@item.Product.Name</a>
+                                </div>
+                                <div class='col-md-4 text-center d-flex justify-content-center align-items-center'>
+                                    <p class='text-muted mb-0 small'>Ilość: @item.Quantity</p>
+                                </div>
+                                <div class='col-md-4 text-center d-flex justify-content-center align-items-center'>
+                                        <p class='text-muted mb-0 small'>@($"{item.PricePerUnit:c2}")/szt.</p>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-2">
+                        <p class="fw-bold mb-0">Szczegóły:</p>
+                        <p class="text-muted mb-0"><span class="fw-bold me-4">Łącznie:</span> @($"{Model.TotalCost - Model.Shipment.Price:c2}") zł</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-2">
+                        <p class="text-muted mb-0">Dane adresowe:</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <p class="text-muted mb-0">@Model.Address</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-5">
+                        <p class="text-muted mb-0">Dostawa : @Model.Shipment.Name</p>
+                        <p class="text-muted mb-0"><span class="fw-bold me-4">Koszt wysyłki: </span>@($"{Model.Shipment.Price:c2}") zł</p>
+                    </div>
+                </div>
+                <div class="card-footer border-1 px-4 py-5"
+                     style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                    <h5 class="d-flex align-items-center justify-content-end text-uppercase mb-0">Całkowity koszt: @($"{Model.TotalCost:c2}")</h5>
+                </div>
+            </div>
+        </div>
     </div>
-}
-    <a asp-action="Index">Powrót</a>
+</div>
+<div class="d-flex justify-content-center align-items-center h-100">
+    @if (User.IsInPolicy("writepolicy", ServiceProvider))
+    {
+        <label asp-for="Status" class="control-label">Status:&nbsp;</label>
+        <select id="statusDropdown" class="form-control w-25" asp-for="Status" asp-items="ViewBag.Statuses"></select>
+
+        <div class="form-group">
+            <button id="changeStatusButton" class="btn btn-success">Zmień status</button>
+        </div>
+    }
 </div>
 <br />
-<div>
+<p class="text-center">
+    @if (User.IsInPolicy("writepolicy", ServiceProvider))
+    {
+        <a asp-action="Index" asp-controller="Order">Powrót</a>
+    }
+    else
+    {
+        <a asp-action="UserData" asp-controller="Order">Powrót</a>
+    }
+</p>
+
+<
+                            @*div>
     <hr />
     <h4>Zamówienie nr @Model.Id</h4>
     <dl class="row">
@@ -101,7 +169,7 @@
             Koszt produktów: @(Model.TotalCost - Model.Shipment.Price) zł
         </td>
     </tfoot>
-    </table>
+    </table>*@
 @section scripts
 {
         <script>

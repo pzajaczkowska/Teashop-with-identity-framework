@@ -5,7 +5,7 @@
 @inject UserManager<IdentityUser> UserManager
 @inject IServiceProvider ServiceProvider
 
-<ul class="navbar-nav">
+<ul class="navbar-nav klasa">
 @if (SignInManager.IsSignedIn(User))
 {
         @if (User.IsInPolicy("writepolicy", ServiceProvider))
@@ -16,12 +16,12 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Zamówienia</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Kategorie</a>
-            </li>
         }
         @if (User.IsInRole("Admin"))
         {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Kategorie</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Role</a>
             </li>

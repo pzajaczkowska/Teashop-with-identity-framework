@@ -44,14 +44,14 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Product.Price)
+                    @($"{item.Product.Price:c2}")
                 </td>
                 <td>
-                    @(item.Product.Price * item.Quantity) zł
+                    @($"{item.Product.Price * item.Quantity:c2}") zł
                 </td>
                 <td>
                     @*<a asp-controller="ShoppingCart" asp-action="RemoveFromCart" asp-route-productId="@item.ProductId">Usuń</a>*@
-                    <a href="#" class="btn-remove" data-product-id="@item.ProductId">Usuń</a>
+                    <a href="#" class="btn-remove btn btn-danger" data-product-id="@item.ProductId"><i class="bi bi-trash"></i></a>
                 </td>
             </tr>
         }
@@ -60,7 +60,7 @@
 
 @if (Model.Count > 0)
 {
-    <a asp-controller="ShoppingCart" asp-action="Checkout">Złóż zamówienie</a>
+    <a asp-controller="ShoppingCart" asp-action="Checkout" class="btn btn-success">Złóż zamówienie</a>
 }
 
 

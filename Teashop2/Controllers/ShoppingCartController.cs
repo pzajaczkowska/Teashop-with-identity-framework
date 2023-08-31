@@ -118,7 +118,7 @@ namespace Teashop2.Controllers
 
             _shoppingCart.ClearCart();
 
-            return RedirectToAction("Index", "Home");
+            return View("Success");
         }
 
     }

@@ -19,26 +19,26 @@
         <a asp-action="Create" class="btn btn-success">Dodaj nowy produkt</a>
     </p>
 }
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
+<form asp-action="Index" method="get" >
+    <div class="form-actions no-color d-inline-bloc">
         <p>
-            Wyszukaj produkty: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Wyszukaj" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Wyczyść filtr</a>
+            <input class="form-control mr-sm-2 w-25" type="text" name="SearchString" placeholder="Wyszukaj produkt" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Wyszukaj" class="btn btn-outline-success my-2 my-sm-0" />
+            <a asp-action="Index" class="btn btn-outline-secondary">Wyczyść filtr</a>
         </p>
     </div>
 </form>
 <table class="table">
-    <thead>
+    <thead class="bg-light">
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nazwa</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none">Nazwa</a>
             </th>
             <th>
                 Opis
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Cena [zł]</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none">Cena [zł]</a>
             </th>
             @if (User.IsInPolicy("writepolicy", ServiceProvider))
             {
@@ -81,8 +81,11 @@
                 }
             </td>
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn bg-light">Edycja&nbsp;<i class="bi bi-pencil"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn bg-light">Szczegóły&nbsp;<i class="bi bi-eye-fill"></i></a>
+                @if (User.IsInPolicy("writepolicy", ServiceProvider))
+                {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-dark">Edycja&nbsp;<i class="bi bi-pencil"></i></a>
+                }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Szczegóły&nbsp;<i class="bi bi-eye-fill"></i></a>
             </td>
         </tr>
         }
@@ -93,19 +96,19 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-<div class="align-content-center">
+<div class="align-content-center mx-auto">
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-primary @prevDisabled">
+       class="btn btn-secondary @prevDisabled">
         <i class="bi bi-arrow-left"></i>
     </a>
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-primary @nextDisabled">
+       class="btn btn-secondary @nextDisabled">
         <i class="bi bi-arrow-right"></i>
     </a>
 </div>

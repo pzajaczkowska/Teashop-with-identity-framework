@@ -1,107 +1,85 @@
 ﻿@model Teashop2.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły";
 }
 
-<h1>Szczegóły produktu</h1>
-<div class="product-image">
+@*<div class="product-image">
     @if (Model.ImagePath == null)
     {
-        <img src="@Url.Content("/images/herbata-saga.png")" alt="Product Image" class="img-thumbnail">
+        <img src="@Url.Content("/images/herbata-saga.png")" alt="Product Image" class="img-thumbnail rounded mx-auto d-block w-50 h-50">
     }
     else
     {
         <img src="@Url.Content(Model.ImagePath)" alt="Product Image" class="img-thumbnail">
     }
-</div>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Nazwa
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Opis
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            Cena
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            Ilość na stanie
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuantityOnStock)
-        </dd>
-        <dt class = "col-sm-2">
-            Czy dostępny
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvaliable)
-        </dd>
-        <dt class="col-sm-2">
-            Kategorie:
-        </dt>
-        <dd class="col-sm-10">
-            <ul>
-                @foreach (var item in Model.Categories)
+</div>*@
+<div class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6">
+                @if (Model.ImagePath == null)
                 {
-                    <li>@Html.DisplayFor(modelItem => item.Name)</li>
+                    <img src="@Url.Content("/images/herbata-saga.png")" alt="Product Image" class="card-img-top mb-5 mb-md-0">
                 }
-            </ul>
-        </dd>
-    </dl>
+                else
+                {
+                    <img src="@Url.Content(Model.ImagePath)" alt="Product Image" class="card-img-top mb-5 mb-md-0">
+                }
+                </div>
+            <div class="col-md-6">
+                <div class="small mb-1">
+                   <span>|</span>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.Name)   |</span>
+                    }
+                </div>
+                <h1 class="display-5 fw-bolder">@Html.DisplayFor(model => model.Name)</h1>
+                <div class="fs-5 mb-5">
+                    <span>@Html.DisplayFor(model => model.Price) zł</span>
+                </div>
+                <p class="lead">@Html.DisplayFor(model => model.Description)</p>
+                <div class="d-flex">
+                    @*<input class="form-control text-center" id="inputQuantity" type="number" value="1" min="1" max="<?php echo min(9, $prod[" na_stanie"]); ?>" style="max-width: 3rem" />*@
+                    @if (User.IsInRole("User") && Model.IsAvaliable)
+                    {
+                        <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary">Dodaj do koszyka</a>
+                    }
+                    else
+                    {
+                        <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary disabled">Dodaj do koszyka</a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success">Edytuj produkt</a>
+                    }
+                </div>
+                    <a asp-action="Index">Powrót do listy produktów</a>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    @if (User.IsInRole("User") && Model.IsAvaliable)
-    {
-        <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary">Dodaj do koszyka</a>
-    }
-    else {
-        <a id="addToCartButton" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-productId="@Model.Id" class="btn btn-primary disabled">Dodaj do koszyka</a>
-    }
-    <a asp-action="Index">Powrót do listy produktów</a>
-    <br>
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-success">Edytuj produkt</a>
-    }
-</div>
-
 
 @section scripts
 {
     <script>
         function addToCartAndRedirect() {
-            var productId = @Model.Id; // Id produktu, które pobierzesz z modelu Razor
-            // Tu dodaj kod obsługujący akcję dodawania do koszyka
-            // ... Twój kod ...
+            var productId = @Model.Id;
 
-            // Teraz przekierowanie po dodaniu produktu do koszyka
             window.location.href = "@Url.Action("AddToCart", "ShoppingCart")?productId=" + productId;
         }
 
         document.getElementById("addToCartButton").addEventListener("click", function (event) {
-            event.preventDefault(); // Zatrzymaj domyślną akcję linku
+            event.preventDefault();
 
-            // Otwórz okienko modalne
             $('#addToCartModal').modal('show');
         });
 
         $(".close-modal").click(function () {
             $("#addToCartModal").modal("hide");
-            addToCartAndRedirect(); // Wywołaj akcję po zamknięciu okna modalnego
+            addToCartAndRedirect();
         });
-    </script>
     </script>
 }
 

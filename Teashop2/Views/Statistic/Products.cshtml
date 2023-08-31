@@ -1,12 +1,9 @@
 ﻿@model List<Teashop2.ViewModel.StatisticViewModel>;
 
 <h1>Statystyki sprzedaży produktów</h1>
+<br/>
 
 <canvas id="salesChart"></canvas>
-@*@foreach (var item in Model)
-{
-    <p>@item.Key</p>
-}*@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,8 +19,8 @@
                 datasets: [{
                     label: 'Ilość sprzedanych produktów',
                     data: productData,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgb(140, 195, 169)',
+                    borderColor: 'rgb(25, 135, 84)',
                     borderWidth: 1
                 }]
             },

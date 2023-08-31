@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.klasa li:hover {
+    background-color: rgba(140, 195, 169, 0.2);
+    transition: 0.5s;
+    border-radius: 2px 2px 0px 0px;
+}
