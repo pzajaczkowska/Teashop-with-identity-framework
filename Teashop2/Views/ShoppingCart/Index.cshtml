@@ -17,6 +17,9 @@
     <thead>
         <tr>
             <th>
+
+            </th>
+            <th>
                 Produkt
             </th>
             <th>
@@ -35,6 +38,16 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Product.ImagePath))
+                    {
+                        <img src="@Url.Content(item.Product.ImagePath)" class="img-thumbnail" style="max-width: 150px;" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("/images/placeholder.jpg")" class="img-thumbnail" style="max-width: 150px;" />
+                    }
+                </td>
                 <td class="product-name">
                     <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.Id">
                         @Html.DisplayFor(modelItem => item.Product.Name)

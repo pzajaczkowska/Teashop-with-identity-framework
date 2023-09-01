@@ -22,37 +22,35 @@
 <form asp-action="Index" method="get" >
     <div class="form-actions no-color d-inline-bloc">
         <p>
-            <input class="form-control mr-sm-2 w-25" type="text" name="SearchString" placeholder="Wyszukaj produkt" value="@ViewData["CurrentFilter"]" />
+            <input class="form-control mr-sm-2 w-25" type="text" name="SearchString" placeholder="Wyszukaj frazę" value="@ViewData["CurrentFilter"]" />
+            <label for="categoryFilter">Kategoria:</label>
+            <select class="form-control w-25" id="categoryFilter" name="categoryFilter">
+                <option value="">Wszystkie</option>
+                @foreach (var category in ViewBag.Categories)
+                {
+                    @if (category.Id.ToString().Equals(ViewData["categoryFilter"]?.ToString()))
+                    {
+                        <option value="@category.Id" selected="selected">@category.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                }
+            </select>
             <input type="submit" value="Wyszukaj" class="btn btn-outline-success my-2 my-sm-0" />
             <a asp-action="Index" class="btn btn-outline-secondary">Wyczyść filtr</a>
         </p>
     </div>
 </form>
-<table class="table">
-    <thead class="bg-light">
-        <tr>
-            <th>
+    <div class="bg-light">
+        <span>Sortuj po: </span>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none">Nazwa</a>
-            </th>
-            <th>
-                Opis
-            </th>
-            <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" class="text-decoration-none">Cena [zł]</a>
-            </th>
-            @if (User.IsInPolicy("writepolicy", ServiceProvider))
-            {
-                <th>
-                    Ilość na stanie
-                </th>
-            }
-            <th>
-                Dostępny
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    </div>
+    <hr />
+
+    @*<tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -88,10 +86,30 @@
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Szczegóły&nbsp;<i class="bi bi-eye-fill"></i></a>
             </td>
         </tr>
-        }
-    </tbody>
-</table>
+        }</tbody>
+    *@
+<div class="row">
+        @foreach (var item in Model) 
+        {
+         <div class="col-md-3">
 
+            <div class="card" style="width: 18rem;">
+                @if (item.ImagePath == null)
+                {
+                    <img src="@Url.Content("/images/placeholder.jpg")" class="card-img-top img-responsive" style="width: 100px; height: 100px;">
+                }
+                else
+                {
+                    <img src="@Url.Content(item.ImagePath)" class="card-img-top img-responsive" style="width: 100px; height: 100px;">
+                }
+                <div class="card-body">
+                    <h5 class="card-title"><a asp-action="Details" asp-route-id="@item.Id">@item.Name</a></h5>
+                    <p class="card-text">@($"{item.Price:c2}")</p>
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Szczegóły&nbsp;<i class="bi bi-eye-fill"></i></a>
+                </div>
+            </div>
+            </div>
+        }
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -101,6 +119,7 @@
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-categoryFilter="@ViewData["categoryFilter"]"
        class="btn btn-secondary @prevDisabled">
         <i class="bi bi-arrow-left"></i>
     </a>
@@ -108,6 +127,7 @@
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       asp-route-categoryFilter="@ViewData["categoryFilter"]"
        class="btn btn-secondary @nextDisabled">
         <i class="bi bi-arrow-right"></i>
     </a>

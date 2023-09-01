@@ -27,11 +27,15 @@ namespace Teashop2.Controllers
             string sortOrder, 
             string currentFilter,
             string searchString,
-            int? pageNumber)
+            int? pageNumber,
+            int? categoryFilter
+            )
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+            ViewData["categoryFilter"] = categoryFilter;
+            ViewBag.Categories = await _context.Categories.ToListAsync();
 
             if (searchString != null)
                 pageNumber = 1;
@@ -40,8 +44,14 @@ namespace Teashop2.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
+
             var products = from p in _context.Products
                            select p;
+
+            if (categoryFilter.HasValue)
+            {
+                products = products.Where(p => p.Categories.Any(c => c.Id == categoryFilter));
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -67,7 +77,7 @@ namespace Teashop2.Controllers
                     break;
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             return View(await PaginatedList<Product>.CreateAsync(products.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
