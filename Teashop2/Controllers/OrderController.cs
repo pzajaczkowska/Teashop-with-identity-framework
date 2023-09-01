@@ -58,7 +58,7 @@ namespace Teashop2.Controllers
                 return NotFound("User not found");
             }
 
-            var orders = _context.Orders.Include(o => o.Shipment).Where(o => o.User.Id == user.Id);
+            var orders = _context.Orders.Include(o => o.Shipment).Where(o => o.User.Id == user.Id).OrderByDescending(o => o.Date);
 
             return View(await orders.ToListAsync());
         }

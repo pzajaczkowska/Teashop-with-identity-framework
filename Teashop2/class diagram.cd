@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Teashop2.Controllers.CategoryController" Collapsed="true">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAEAAEACAAEAAAgAAAA=</HashCode>
+      <FileName>Controllers\CategoryController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.HomeController" Collapsed="true">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAIAAAAQAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.OrderController" Collapsed="true">
+    <Position X="4.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAABAQAQAABBAAAAAAQAAAAAAAAAAACAAEAAAAJAAA=</HashCode>
+      <FileName>Controllers\OrderController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.ProductController" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACABBAAAAAAAAAAAAAAAAEACAAEAAAAAABA=</HashCode>
+      <FileName>Controllers\ProductController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.RoleController" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\RoleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.ShoppingCartController" Collapsed="true">
+    <Position X="1.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEABAAAAAAABAAAAAAAAAEAAAAAAAAAAAEIAAAAACA=</HashCode>
+      <FileName>Controllers\ShoppingCartController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.StatisticController" Collapsed="true">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABCAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAQ=</HashCode>
+      <FileName>Controllers\StatisticController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Controllers.UserController" Collapsed="true">
+    <Position X="4.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAABEAAAAAABAAAIAAAAAAgAAAAAAACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\UserController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.PaginatedList&lt;T&gt;" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAEAAUAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Controllers\PaginatedList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.Category" Collapsed="true">
+    <Position X="9" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.ErrorViewModel" Collapsed="true">
+    <Position X="10.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.Order" Collapsed="true">
+    <Position X="12.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAEAAAAABAJIAAAAAAAABAAAAEDAQIAAAAAAAA=</HashCode>
+      <FileName>Models\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.OrderedProduct" Collapsed="true">
+    <Position X="9" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAEAAA=</HashCode>
+      <FileName>Models\OrderedProduct.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.Product" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAQAgAAAAAAAAAIQAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.Shipment" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAQAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Shipment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.ShoppingCart" Collapsed="true">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQ=</HashCode>
+      <FileName>Models\ShoppingCart.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.Models.UserWithRoles" Collapsed="true">
+    <Position X="10.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserWithRoles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModel.AddProductViewModel" Collapsed="true">
+    <Position X="7.75" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAEAAAAEAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\AddProductViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModel.CategoryViewModel" Collapsed="true">
+    <Position X="10.25" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\CategoryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModel.RoleViewModel" Collapsed="true">
+    <Position X="7.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\RoleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModel.StatisticViewModel" Collapsed="true">
+    <Position X="10.25" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>ViewModel\StatisticViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModel.UserViewModel" Collapsed="true">
+    <Position X="12.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\UserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Teashop2.ViewModels.CheckoutViewModel" Collapsed="true">
+    <Position X="12.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\CheckoutViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Teashop2.Models.Status" Collapsed="true">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Models\Order.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
